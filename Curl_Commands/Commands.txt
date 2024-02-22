@@ -1,0 +1,5 @@
+GET:		$ curl -i -X GET 127.0.0.1:8080/products
+GET($id):	$ curl -i -X GET 127.0.0.1:8080/products/"id"
+POST:		$ curl -i -X POST -d '{"nome":"nome", "prezzo":1, "marca":"marca"}' 127.0.0.1:8080/products
+PATCH:		$ curl -i -X PATCH -d '{"nome":"nome", "prezzo":1, "marca":"marca"}' 127.0.0.1:8080/products
+DELETE:		$ curl -i -X DELETE 127.0.0.1:8080/products/"id"
