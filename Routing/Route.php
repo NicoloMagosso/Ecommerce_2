@@ -93,7 +93,7 @@ addRoute('GET', '/products', function () {
             'type' => 'products',
             'id' => $product->getId(),
             'attributes' => [
-                'name' => $product->getNome(),
+                'nome' => $product->getNome(),
                 'marca' => $product->getMarca(),
                 'prezzo' => $product->getPrezzo()
             ]
@@ -111,20 +111,26 @@ addRoute('GET', '/products', function () {
 
 addRoute('POST', '/products', function () {
 
-    $postData = json_decode(file_get_contents('php://input'), true);
+    if(isset($_POST['data'])){
+        $postData = $_POST;
+    }
+    else{
+        $postData = json_decode(file_get_contents('php://input'), true);
+    }
 
     header("Location: /products");
     header('HTTP/1.1 201 Created.');
     header('Content-Type: application/vnd.api+json');
 
     try {
-        $newProduct = Product::Create($postData);
+        $params = $postData['data']['attributes'];
+        $newProduct = Product::Create($params);
 
         $response = ['data' => [
             'type' => 'products',
             'id' => $newProduct->getId(),
             'attributes' => [
-                'name' => $newProduct->getNome(),
+                'nome' => $newProduct->getNome(),
                 'marca' => $newProduct->getMarca(),
                 'prezzo' => $newProduct->getPrezzo()
             ]
@@ -149,7 +155,8 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
     $product = Product::Find($nID[1]);
 
     try {
-        $updatedProduct = $product->Update($putData);
+        $params = $putData['data']['attributes'];
+        $updatedProduct = $product->Update($params);
 
         if (isset($updatedProduct)) {
 
@@ -158,7 +165,7 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
                 'type' => 'products',
                 'id' => $updatedProduct->getId(),
                 'attributes' => [
-                    'name' => $updatedProduct->getNome(),
+                    'nome' => $updatedProduct->getNome(),
                     'marca' => $updatedProduct->getMarca(),
                     'prezzo' => $updatedProduct->getPrezzo()
                 ]
